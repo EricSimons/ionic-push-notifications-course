@@ -8,8 +8,11 @@ Lets first get a basic understanding of how Apple's APNS and Google's GCM push n
 
 The video above explains the high level overview of how this all works, but if you're interested learning more, the following resources from Google and Apple should answer any of the remaining questions you have:
 
-{x: apple-push-info} [Apple Push Notification Service](https://developer.apple.com/library/ios/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/Chapters/ApplePushService.html#//apple_ref/doc/uid/TP40008194-CH100-SW9)
-{x: google-push-info} [Google Cloud Messaging](https://developer.android.com/google/gcm/gcm.html)
+{x: apple-push-info}
+[Apple Push Notification Service](https://developer.apple.com/library/ios/documentation/NetworkingInternet/Conceptual/RemoteNotificationsPG/Chapters/ApplePushService.html#//apple_ref/doc/uid/TP40008194-CH100-SW9)
+
+{x: google-push-info}
+[Google Cloud Messaging](https://developer.android.com/google/gcm/gcm.html)
 
 Needless to say, these are not the most intuitive services to directly work with, and we highly recommend you use the amazing services that have been built to make them easier to implement. Without further ado, lets dive into the real meat of implementing push notifications in your apps.
 
@@ -26,7 +29,8 @@ There are a few services out there that provide this pub/sub functionality, but 
 We will do an overview of a couple other services available to you later on in this course, but in general the setup across these various services are very similar!
 
 ## Preparing your environment
-{x: ios-certificate} __If you plan on building an app for iOS__, you will need to create a certificate that allows your app to receive push notifications. [Read this guide through section 2 to learn how this is done.](https://www.parse.com/tutorials/ios-push-notifications)
+{x: ios-certificate}
+__If you plan on building an app for iOS__, you will need to create a certificate that allows your app to receive push notifications. [Read this guide through section 2 to learn how this is done.](https://www.parse.com/tutorials/ios-push-notifications)
 
 The other thing you need to know when developing for iOS is that __Apple does not let you send push notifications to apps running in the emulator; you have to use a real device__. We recommend that you test any functions the push notification will invoke in the emulator, and then when your app is built out you will need to load your app on a real device to ensure push notifications are actually being received.
 
@@ -34,19 +38,25 @@ The other thing you need to know when developing for iOS is that __Apple does no
 ## Setting up Parse
 {video: parse}
 
-{x: signup-parse} The first thing you will need to do is sign up for a Parse account. You can do this by [visiting Parse's website](https://www.parse.com/apps) and creating an app (feel free to name it whatever you want).
+{x: signup-parse}
+The first thing you will need to do is sign up for a Parse account. You can do this by [visiting Parse's website](https://www.parse.com/apps) and creating an app (feel free to name it whatever you want).
 
-{x: clone-repo} [Clone the repo for this course](https://github.com/EricSimons/ionic-push-notifications-course) and navigate to the `code/` directory. Run `npm install` to ensure all of Ionic's dependencies are installed.
+{x: clone-repo}
+[Clone the repo for this course](https://github.com/EricSimons/ionic-push-notifications-course) and navigate to the `code/` directory. Run `npm install` to ensure all of Ionic's dependencies are installed.
 
 To get this project working for your app specifically, we need to swap your unique keys and identifiers:
 
-{x: setup-repo} In `config.xml`, make sure `widget id="your.app.here"` equals the identifier in your provisioning profile for APNS and/or for GCM.
+{x: setup-repo}
+In `config.xml`, make sure `widget id="your.app.here"` equals the identifier in your provisioning profile for APNS and/or for GCM.
 
-{x: setup-parse} In `www/app.js`, in the line `window.parsePlugin.initialize(appId, clientKey`, replace `appId` and `clientKey` with your Parse app's application ID and client key (this can be found on your Parse app's settings page under 'keys')
+{x: setup-parse}
+In `www/app.js`, in the line `window.parsePlugin.initialize(appId, clientKey`, replace `appId` and `clientKey` with your Parse app's application ID and client key (this can be found on your Parse app's settings page under 'keys')
 
-{x: add-ios-android} Finally, add iOS and/or Android to this cordova project with `ionic platform add [ios | android]`
+{x: add-ios-android}
+Finally, add iOS and/or Android to this cordova project with `ionic platform add [ios | android]`
 
-{x: install-parse-plugin} Install the Parse cordova by running `cordova plugin add https://github.com/benjie/phonegap-parse-plugin` (if you're developing for iOS, there is currently a fork with a newer Parse SDK you can install from here: https://github.com/fastrde/phonegap-parse-plugin)
+{x: install-parse-plugin}
+Install the Parse cordova by running `cordova plugin add https://github.com/benjie/phonegap-parse-plugin` (if you're developing for iOS, there is currently a fork with a newer Parse SDK you can install from here: https://github.com/fastrde/phonegap-parse-plugin)
 
 At this point, your project should be runnable! There are really only two things you need to call when using Parse: `initialize`, which ensures that this device is registered for push notifications, and `subscribe`, which will subscribe this specific phone to any channel you provide. There is also a third method `getInstallationId` that will return the installation ID of this Parse user, but it's only useful if you're deep diving into some of Parse's more advanced features.
 
